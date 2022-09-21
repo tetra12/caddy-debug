@@ -1,0 +1,36 @@
+{
+  debug
+	servers {
+		# listener_wrappers {
+		# 	http_redirect
+		# 	tls
+		# }
+		timeouts {
+			read_body 30s
+			read_header 30s
+			write 30s
+			idle 30s
+		}
+		max_header_size 32MB
+		log_credentials
+		strict_sni_host
+		protocols h1 h2 h2c
+	}
+
+  order grpc_web before reverse_proxy
+}
+
+http://0.0.0.0:9000 {
+
+  route /gate/* {
+      uri strip_prefix /gate
+      reverse_proxy h2c://0.0.0.0:50051
+  }
+
+  root * /app/dist
+  route {
+    try_files {path} {path}/ /index.html
+    file_server
+  }
+}
+

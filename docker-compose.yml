@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  # caddy:
+  #   image: neurodyne8nws/caddy-grpc
+  #   container_name: caddy
+  #   build:
+  #     dockerfile: Dockerfile.caddy
+  #     context: .
+
+  back:
+    image: neurodyne8nws/caddy-back
+    container_name: back
+    ports:
+      - 50051:50051
+
+  web:
+    image: neurodyne8nws/caddy-with-web
+    container_name: web
+    ports:
+      - 9000:9000
+    build:
+      dockerfile: Dockerfile.web
+      context: .

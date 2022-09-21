@@ -1,0 +1,14 @@
+# Donate a compiled working WEB project
+FROM neurodyne8nws/caddy-web as builder 
+
+# Use Caddy with GRPC support
+# Apply Caddy File servre + GRPC support to serve the donated project
+FROM neurodyne8nws/caddy-grpc
+
+WORKDIR /app/dist 
+
+COPY --from=builder /app/dist .
+
+COPY Caddyfile /opt/caddy/Caddyfile
+
+CMD caddy run --config /opt/caddy/Caddyfile --adapter caddyfile
