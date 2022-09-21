@@ -14,11 +14,15 @@ services:
     ports:
       - 50051:50051
 
-  web:
-    image: neurodyne8nws/caddy-with-web
-    container_name: web
+  caddy:
+    image: neurodyne8nws/caddy-grpc
+    container_name: caddy
+    command: caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+    expose:
+      - 50051
     ports:
-      - 9000:9000
-    build:
-      dockerfile: Dockerfile.web
-      context: .
+      - 2019:2019
+      - 80:80
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./dist:/app/dist
