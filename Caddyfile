@@ -1,9 +1,12 @@
 {
   debug
+
+  # Enable h2c transport for GRPC
 	servers {
 		protocols h1 h2 h2c
 	}
 
+  # Enable GRPC plugin
   order grpc_web before reverse_proxy
 }
 
